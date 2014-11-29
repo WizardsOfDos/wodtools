@@ -19,6 +19,6 @@ def getEvents( event, flag ):
     pass
 
 
-def _createEvent(es, data):
-    res = es.index(index=ES_INDEX, doc_type=ES_TYPE_EVENT, body=data)
+def _createEvent(connection, data):
+    res = connection.index(index=ES_INDEX, doc_type=ES_TYPE_EVENT, body=data)
     return res['_id']
