@@ -9,3 +9,6 @@ class Flag(object):
         self.user = user
         self.time = time
         
+    @staticmethod
+    def fromDict(values):
+        return Flag(values["flag"], values["service"], values["team"], values["user"], values["time"])
