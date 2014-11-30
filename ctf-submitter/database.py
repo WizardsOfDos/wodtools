@@ -9,9 +9,9 @@ def createConnection():
     return ElasticSearch([{"host": ES_HOST, "port": ES_PORT}])
 
 
-def addEventEntry(connection, event, flag, additionalData={}):
-    additionalData["event"] = event
-    additionalData["flag"] = flag
+def addEventEntry(connection, flag, additionalData={}):
+    for key in flag.__dict__.keys():
+        additionalData[key] = flag.__dict__[key]
     return _createEvent(connection, additionalData)
 
 
