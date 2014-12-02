@@ -7,8 +7,10 @@ logger = get_task_logger(__name__)
 
 LOCAL_FLAG_STORAGE = set()
 
+
 @app.task()
 def duplicate_local(flag, add=True, **kwargs):
+    logger.debug("checking flag '{0}' for local duplicates".format(flag))
     if flag in LOCAL_FLAG_STORAGE:
         raise DuplicateFlagException(flag)
     if add:
@@ -18,5 +20,6 @@ def duplicate_local(flag, add=True, **kwargs):
 
 @app.task()
 def duplicate_elasticsearch(flag, add=True, **kwargs):
+    logger.debug("checking flag '{0}' for duplicates in elasticsearch".format(flag))
     logger.error("duplicate checking by elasticsearch is not implemented yet")
     return flag
