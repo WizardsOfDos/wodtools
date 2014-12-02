@@ -4,7 +4,7 @@ from celery import Celery
 from celery.utils.log import get_task_logger
 
 #: Set default configuration module name
-os.environ.setdefault('CELERY_CONFIG_MODULE', 'celeryconfig')
+os.environ.setdefault('CELERY_CONFIG_MODULE', 'flgproc.celeryconfig')
 
 app = Celery()
 app.config_from_envvar('CELERY_CONFIG_MODULE')
