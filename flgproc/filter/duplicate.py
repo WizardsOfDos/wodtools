@@ -5,14 +5,14 @@ from flgproc.exceptions import DuplicateFlagException
 
 logger = get_task_logger(__name__)
 
-LOCAL_FLAG_STORAGE = []
+LOCAL_FLAG_STORAGE = set()
 
 @app.task()
 def duplicate_local(flag, add=True, **kwargs):
     if flag in LOCAL_FLAG_STORAGE:
         raise DuplicateFlagException(flag)
     if add:
-        LOCAL_FLAG_STORAGE.append(flag)
+        LOCAL_FLAG_STORAGE.add(flag)
     return flag
 
 
