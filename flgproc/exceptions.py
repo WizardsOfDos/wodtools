@@ -6,4 +6,4 @@ class IllegalFlagException(Exception):
 
 class DuplicateFlagException(Exception):
     def __init__(self, flag):
-        super(DuplicateFlagException, self).__init__("Duplicate flag: '{flag}'".format(flag))
+        super(DuplicateFlagException, self).__init__("Duplicate flag: '{flag}'".format(flag=flag))
