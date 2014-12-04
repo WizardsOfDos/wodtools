@@ -1,4 +1,3 @@
-{% extends "base.html" %}
-{% block content %}
-
-{% endblock %}
+{% for flag, result in results -%}
+{{ flag }}: {{ result }}
+{% endfor -%}
