@@ -1,7 +1,6 @@
 from flask import Flask
 
-#Create the app
 app = Flask(__name__)
+app.config.from_object('webapi.config')
 
-#Load config from config file
-app.config.from_object('config')
+import webapi.views
