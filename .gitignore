@@ -1,3 +1,6 @@
+#ignore PyCharm/IDEA project folder
+.idea
+
 #ignore virtualenv folder
 /venv
 
