@@ -23,12 +23,8 @@ def inpython_collector(flag, **flagargs):
     """
     first call the simple checks locally and stop if they throw an exception
     """
-    try:
-        duplicate_local(flag)
-        regex(flag)
-    except Exception as e:
-        logger.error("Stopping flag submission because some check threw an exception: %s" % e)
-        return
+    duplicate_local(flag)
+    regex(flag)
 
     """
     If the checks did not throw exceptions, put flag in remote processing.
