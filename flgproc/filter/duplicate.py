@@ -1,11 +1,14 @@
+from collections import deque
+
 from celery.utils.log import get_task_logger
 
+from flgproc import conf
 from flgproc.tasks import app
 from flgproc.exceptions import DuplicateFlagException
 
 logger = get_task_logger(__name__)
 
-LOCAL_FLAG_STORAGE = set()
+LOCAL_FLAG_STORAGE = deque(maxlen=conf.DUPFLAG_DEQUEU_MAXLEN)
 
 
 @app.task()
@@ -14,7 +17,7 @@ def duplicate_local(flag, add=True, **kwargs):
     if flag in LOCAL_FLAG_STORAGE:
         raise DuplicateFlagException(flag)
     if add:
-        LOCAL_FLAG_STORAGE.add(flag)
+        LOCAL_FLAG_STORAGE.append(flag)
     return flag
 
 
