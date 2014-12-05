@@ -9,7 +9,14 @@ config = Config(os.environ)
 config.from_object(config_default)
 config.from_envvar('ELconn.config', True)
 
-ES_CONNECTION = Elasticsearch([{"host": config['ES_HOST'], "port": config['ES_PORT']}])
+
+def create_connection(**kwargs):
+    conn_config = {"host": config['ES_HOST'], "port": config['ES_PORT']}
+    conn_config.update(kwargs)
+    return Elasticsearch([conn_config])
+
+
+ES_CONNECTION = create_connection()
 
 
 def create_event(data, connection=ES_CONNECTION):
