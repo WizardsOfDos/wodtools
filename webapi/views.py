@@ -10,7 +10,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/submit_flag', methods=['POST'])
+@app.route('/flag', methods=['POST'])
 def submit_flag():
     flags = request.data.decode().strip().split('\n')
     flag_parameters = request.args.to_dict(True)
