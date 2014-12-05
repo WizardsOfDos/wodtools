@@ -24,7 +24,7 @@ All commands (besides redis) are expected to be run inside of the `wodtools` pro
 ### Running the Worker/Consumer
 
 
-`celery -A flgproc.tasks worker --loglevel=INFO
+`celery -A flgproc.tasks worker --loglevel=INFO`
 
 
 ### Running the Producer
