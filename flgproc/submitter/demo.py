@@ -1,6 +1,7 @@
 import socket
 
 from celery.utils.log import get_task_logger
+from ELconn import event
 
 from flgproc.tasks import app
 
@@ -11,6 +12,7 @@ _UDPSOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 def printer(flag, *args, **kwargs):
     logger.info("Flag {flag} was submitted with the following args({args}) and kwargs({kwargs})".format(
         flag=flag, args=args, kwargs=kwargs))
+    event.add_event_SUBMIT(flag, 'DUMMY')
 
 
 @app.task(ignore_result=True)

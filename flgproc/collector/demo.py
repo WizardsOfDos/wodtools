@@ -1,6 +1,8 @@
 from celery import chain
 from celery.utils.log import get_task_logger
 
+from ELconn import event
+
 from flgproc.tasks import app
 from flgproc.filter.matching import regex
 from flgproc.filter.duplicate import duplicate_local, duplicate_elasticsearch
@@ -25,6 +27,11 @@ def inpython_collector(flag, **flagargs):
     """
     duplicate_local(flag)
     regex(flag)
+
+    """
+    Create the ENTRY event for this flag
+    """
+    event.add_event_ENTRY(flag, **flagargs)
 
     """
     If the checks did not throw exceptions, put flag in remote processing.
