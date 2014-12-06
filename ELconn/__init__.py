@@ -19,11 +19,11 @@ def create_connection(**kwargs):
 ES_CONNECTION = create_connection()
 
 
-def create_event(data, connection=ES_CONNECTION):
-    res = connection.index(index=config['ES_INDEX'], doc_type=config['ES_TYPE_EVENT'], body=data)
+def add(data, connection=ES_CONNECTION, index=config['ES_INDEX'], **kwargs):
+    res = connection.index(index=index, body=data, doc_type=config['ES_TYPE_EVENT'], **kwargs)
     return res['_id']
 
 
-def search(body, size=100, page=0, connection=ES_CONNECTION):
-    return connection.search(index=config['ES_INDEX'], doc_type=config['ES_TYPE_EVENT'],
-                             body=body, size=size, page=page)
+def search(body, size=100, page=0, connection=ES_CONNECTION, index=config['ES_INDEX'], **kwargs):
+    return connection.search(index=index, body=body, size=size, page=page,
+                             doc_type=config['ES_TYPE_EVENT'], **kwargs)
