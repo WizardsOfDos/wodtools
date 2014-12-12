@@ -5,7 +5,6 @@ import ELconn
 from ELconn import ES_CONNECTION
 
 config = ELconn.Config(ELconn.config)
-config.update(ES_INDEX='flag_event')
 config.from_envvar('ELconn.event.config', True)
 
 
