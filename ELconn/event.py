@@ -30,16 +30,25 @@ def add_event_ENTRY(flag, team=None, service=None, **kwargs):
 def add_event_SUBMIT(flag, result, **kwargs):
     return add_event(flag, event_type=EventTypes.SUBMIT, result=result, **kwargs)
 
+
+def add_event_DUPLICATE(flag, result, **kwargs):
+    return add_event(flag, event_type=EventTypes.DUPLICATE, result=result, **kwargs)
+
+
+def get_events_count(flag, event_type, **kwargs):
+    event_type = event_type.name if isinstance(event_type, EventTypes) else event_type
+    body = {"query": { "bool": { "must": [ {"term": { "flag": flag}}, {"term": { "event": event_type}}]}}}
+    data = ELconn.search(body, size=0, **kwargs)
+    return data["hits"]["total"]
+
+
+def get_events_count_ENTRY(flag, **kwargs):
+    return get_events_count(flag, event_type=EventTypes.ENTRY)
+
 # not so much cleaned up below here; also: NOT TESTED!
 
 def getFlagsByEvent(event, size=100, page=0):
     return getDataByEvent(event, size, page)
-
-
-def numberOfEntries(event, flag):
-    body = {"query": { "bool": { "must": [ {"term": { "flag": flag}}, {"term": { "event": event}}]}}}
-    data = ELconn.search(body, size=0, connection=ES_CONNECTION)
-    return data["hits"]["total"]
 
 
 def getDataByEvent(event, size=100, page=0):

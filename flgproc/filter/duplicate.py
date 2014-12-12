@@ -6,6 +6,8 @@ from flgproc import conf
 from flgproc.tasks import app
 from flgproc.exceptions import DuplicateFlagException
 
+import ELconn
+
 logger = get_task_logger(__name__)
 
 LOCAL_FLAG_STORAGE = deque(maxlen=conf.DUPFLAG_DEQUEU_MAXLEN)
@@ -24,5 +26,6 @@ def duplicate_local(flag, add=True, **kwargs):
 @app.task()
 def duplicate_elasticsearch(flag, add=True, **kwargs):
     logger.debug("checking flag '{0}' for duplicates in elasticsearch".format(flag))
-    logger.error("duplicate checking by elasticsearch is not implemented yet")
+    if ELconn.get_events_count_ENTRY(flag) > 0:
+        raise DuplicateFlagException(flag)
     return flag
