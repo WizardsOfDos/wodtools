@@ -6,7 +6,7 @@ from flgproc import conf
 from flgproc.tasks import app
 from flgproc.exceptions import DuplicateFlagException
 
-import ELconn
+import ELconn.event
 
 logger = get_task_logger(__name__)
 
@@ -26,6 +26,6 @@ def duplicate_local(flag, add=True, **kwargs):
 @app.task()
 def duplicate_elasticsearch(flag, add=True, **kwargs):
     logger.debug("checking flag '{0}' for duplicates in elasticsearch".format(flag))
-    if ELconn.get_events_count_ENTRY(flag) > 0:
+    if ELconn.event.get_events_count_ENTRY(flag) > 0:
         raise DuplicateFlagException(flag)
     return flag
