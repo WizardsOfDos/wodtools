@@ -47,23 +47,23 @@ def get_events_count_ENTRY(flag, **kwargs):
 
 # not so much cleaned up below here; also: NOT TESTED!
 
-def getFlagsByEvent(event, size=100, page=0):
-    return getDataByEvent(event, size, page)
+def getFlagsByEvent(event, size=100, skip=0):
+    return getDataByEvent(event, size, skip)
 
 
-def getDataByEvent(event, size=100, page=0):
+def getDataByEvent(event, size=100, skip=0):
     body = {"query":{ "term": { "event": event }}}
-    res = ELconn.search(body, size, page, connection=ES_CONNECTION)
+    res = ELconn.search(body, size, skip, connection=ES_CONNECTION)
     return map(lambda hit: hit['_source'], res['hits']['hits'])
 
 
-def getDataByFlag(flag, size=100, page=0):
+def getDataByFlag(flag, size=100, skip=0):
     body={"query":{ "term": { "flag": flag }}}
-    res = ELconn.search(body, size, page, connection=ES_CONNECTION)
+    res = ELconn.search(body, size, skip, connection=ES_CONNECTION)
     return map(lambda hit: hit['_source'], res['hits']['hits'])
 
 
-def getDataByFlagAndEvent(flag, event, size=100, page=0):
+def getDataByFlagAndEvent(flag, event, size=100, skip=0):
     body= {"query": { "bool": { "must": [ {"term": { "flag": flag}}, {"term": { "event": event}}]}}}
-    res = ELconn.search(body, size, page, connection=ES_CONNECTION)
+    res = ELconn.search(body, size, skip, connection=ES_CONNECTION)
     return map(lambda hit: hit['_source'], res['hits']['hits'])

@@ -24,6 +24,6 @@ def add(data, connection=ES_CONNECTION, index=config['ES_INDEX'], **kwargs):
     return res['_id']
 
 
-def search(body, size=100, page=0, connection=ES_CONNECTION, index=config['ES_INDEX'], **kwargs):
-    return connection.search(index=index, body=body, size=size, page=page,
+def search(body, size=100, skip=0, connection=ES_CONNECTION, index=config['ES_INDEX'], **kwargs):
+    return connection.search(index=index, body=body, size=size, from_=skip,
                              doc_type=config['ES_TYPE_EVENT'], **kwargs)
