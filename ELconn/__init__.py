@@ -5,7 +5,7 @@ from flask.config import Config  # reusing flasks config system
 
 from ELconn import config_default
 
-config = Config(os.environ)
+config = Config(os.path.dirname(os.path.abspath(__file__)))
 config.from_object(config_default)
 config.from_envvar('ELconn.config', True)
 

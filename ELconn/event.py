@@ -1,10 +1,11 @@
 from enum import Enum
 from datetime import datetime
+import os
 
 import ELconn
 from ELconn import ES_CONNECTION
 
-config = ELconn.Config(ELconn.config)
+config = ELconn.Config(os.path.dirname(os.path.abspath(__file__)), defaults=ELconn.config)
 config.from_envvar('ELconn.event.config', True)
 
 
