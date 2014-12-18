@@ -4,11 +4,13 @@ import logging
 import re
 import time
 
+
+from flgproc.conf import FLAG_PATTERN
 flag_pattern = "[a-zA-Z0-9]{31}="
 
 
 def parse_data(data):
-    if not re.fullmatch(flag_pattern, data):
+    if not re.fullmatch(FLAG_PATTERN, data):
         return False, "Wrong pattern"
     if data.startswith("1337"):
         return True, "Success!"
@@ -28,16 +30,19 @@ class InputTCPServer(socketserver.ThreadingTCPServer):
 
 
 class InputTcpHandler(socketserver.StreamRequestHandler):
+    def write_text(self, text, end="\n", encoding="utf-8"):
+        self.wfile.write("{text}{end}".format(text=text, end=end).encode(encoding))
+
     def handle(self):
         try:
-            self.wfile.write("Flag submission enterprise service\nCopyright (c) 1970-2014 Chaos Inc.\n".encode("utf8"))
+            self.write_text("Flag submission enterprise service\nCopyright (c) 1970-2014 Chaos Inc.")
             while True:
                 data = self.rfile.readline().strip().decode("utf8")
                 if len(data) == 0:
-                    self.wfile.write("bye\n".encode("utf8"))
+                    self.write_text("bye")
                     return
                 (ok, answer) = parse_data(data)
-                self.wfile.write((answer+"\n").encode("utf8"))
+                self.write_text(answer)
                 if ok:
                     pass
         except BrokenPipeError:
