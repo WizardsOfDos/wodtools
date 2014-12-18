@@ -5,11 +5,11 @@ import re
 import time
 
 
-from flgproc.conf import FLAG_PATTERN
+from flgproc import conf as config
 
 
 def parse_data(data):
-    if not re.fullmatch(FLAG_PATTERN, data):
+    if not re.fullmatch(config.FLAG_PATTERN, data):
         return False, "Wrong pattern"
     if data.startswith("1337"):
         return True, "Success!"
@@ -51,7 +51,7 @@ class InputTcpHandler(socketserver.StreamRequestHandler):
 class InputServer(Thread):
     def __init__(self):
         Thread.__init__(self)
-        self.server = InputTCPServer(('', 50031), InputTcpHandler)
+        self.server = InputTCPServer(('', config.SUBMIT_SERVER_PORT), InputTcpHandler)
 
     def run(self):
         try:
