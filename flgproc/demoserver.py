@@ -6,7 +6,6 @@ import time
 
 
 from flgproc.conf import FLAG_PATTERN
-flag_pattern = "[a-zA-Z0-9]{31}="
 
 
 def parse_data(data):
