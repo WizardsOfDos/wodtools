@@ -17,9 +17,10 @@ class EventTypes(Enum):
 
 
 def add_event(flag, event_type=EventTypes.UNKNOWN, **additional_data):
-    additional_data.update(flag=flag,
+    additional_data.update({'@timestamp': datetime.now()},
+                           flag=flag,
                            event_type=event_type.name if isinstance(event_type, EventTypes) else event_type)
-    return ELconn.add(additional_data, timestamp=datetime.now(),
+    return ELconn.add(additional_data,
                       connection=ES_CONNECTION, index=config['ES_INDEX'])
 
 
