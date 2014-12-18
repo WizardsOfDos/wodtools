@@ -6,6 +6,7 @@ import time
 
 flag_pattern = "[a-zA-Z0-9]{31}="
 
+
 def parse_data(data):
     if not re.fullmatch(flag_pattern, data):
         return False, "Wrong pattern"
@@ -16,6 +17,7 @@ def parse_data(data):
 
 class InputTCPServer(socketserver.ThreadingTCPServer):
     request_list = []
+
     def close_request(self, request):
         self.request_list.remove(request)
         super().close_request(request)
@@ -29,7 +31,7 @@ class InputTcpHandler(socketserver.StreamRequestHandler):
     def handle(self):
         try:
             self.wfile.write("Flag submission enterprise service\nCopyright (c) 1970-2014 Chaos Inc.\n".encode("utf8"))
-            while(True):
+            while True:
                 data = self.rfile.readline().strip().decode("utf8")
                 if len(data) == 0:
                     self.wfile.write("bye\n".encode("utf8"))
@@ -45,7 +47,7 @@ class InputTcpHandler(socketserver.StreamRequestHandler):
 class InputServer(Thread):
     def __init__(self):
         Thread.__init__(self)
-        self.server = InputTCPServer(('',50031), InputTcpHandler)
+        self.server = InputTCPServer(('', 50031), InputTcpHandler)
 
     def run(self):
         try:
