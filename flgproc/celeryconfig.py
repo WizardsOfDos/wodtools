@@ -14,3 +14,7 @@ CELERY_IMPORTS = ['flgproc.%s' % x for x in [
     'collector.demo',
     'submitter.demo',
 ]]
+
+CELERY_ROUTES = {
+    'flgproc.submitter.submit_flag': {'queue': 'submit'}
+}
