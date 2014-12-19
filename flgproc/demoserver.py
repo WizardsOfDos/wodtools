@@ -1,12 +1,15 @@
 from threading import Thread
+import logging
 import socketserver
 import logging
 import re
 import time
 
 
-from flgproc import conf as config
+from flgproc import config_default as config
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def parse_data(data):
     if not re.fullmatch(config.FLAG_PATTERN, data):
@@ -25,11 +28,13 @@ class InputTCPServer(socketserver.ThreadingTCPServer):
 
     def process_request(self, request, client_address):
         self.request_list.append(request)
+        logger.info("handling request from client: (%s, %s)" % client_address)
         super().process_request(request, client_address)
 
 
 class InputTcpHandler(socketserver.StreamRequestHandler):
     def write_text(self, text, end="\n", encoding="utf-8"):
+        logger.info("sending msg: %s" % text)
         self.wfile.write("{text}{end}".format(text=text, end=end).encode(encoding))
 
     def handle(self):
@@ -46,7 +51,6 @@ class InputTcpHandler(socketserver.StreamRequestHandler):
                     pass
         except BrokenPipeError:
             return
-
 
 class InputServer(Thread):
     def __init__(self):
