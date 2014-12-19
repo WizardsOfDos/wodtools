@@ -23,7 +23,7 @@ def send_flags(flags, team, service):
         url = "http://{host}:{port}/flag?team={team}&service={service}"
         url = url.format(host=FLAGSERVER_HOST, port=FLAGSERVER_PORT, team=team, service=service)
         request = urllib.request.Request(url, data='\n'.join(flags).encode("utf8"))
-        request.add_header("Content-Type", "plain/text")
+        request.add_header("Content-Type", "text/plain")
         ans = urllib.request.urlopen(request)
         print(ans.read().decode('utf8'))
     except Exception as e:
