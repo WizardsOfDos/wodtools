@@ -3,7 +3,7 @@ import socket
 from celery.utils.log import get_task_logger
 from ELconn import event
 
-from flgproc.tasks import app
+from flgproc import app
 
 logger = get_task_logger(__name__)
 _UDPSOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

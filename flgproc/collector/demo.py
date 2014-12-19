@@ -3,7 +3,7 @@ from celery.utils.log import get_task_logger
 
 from ELconn import event
 
-from flgproc.tasks import app
+from flgproc import app
 from flgproc.filter.matching import regex
 from flgproc.filter.duplicate import duplicate_local, duplicate_elasticsearch
 from flgproc.submitter.demo import printer
@@ -41,4 +41,5 @@ def inpython_collector(flag, **flagargs):
     In this example the ignore_result is redundant as the task is already delcared this way.
     But we keep it as an example
     """
-    chain(duplicate_elasticsearch.s(flag) | printer.subtask( kwargs=flagargs, options={"ignore_result": True}))()
+    #chain(duplicate_elasticsearch.s(flag) | printer.subtask( kwargs=flagargs, options={"ignore_result": True}))()
+    chain( printer.subtask( kwargs=flagargs, options={"ignore_result": True}))()

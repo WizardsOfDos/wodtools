@@ -2,15 +2,14 @@ from collections import deque
 
 from celery.utils.log import get_task_logger
 
-from flgproc import conf
-from flgproc.tasks import app
+from flgproc import config, app
 from flgproc.exceptions import DuplicateFlagException
 
 import ELconn.event
 
 logger = get_task_logger(__name__)
 
-LOCAL_FLAG_STORAGE = deque(maxlen=conf.DUPFLAG_DEQUEU_MAXLEN)
+LOCAL_FLAG_STORAGE = deque(maxlen=config.DUPFLAG_DEQUEU_MAXLEN)
 
 
 @app.task()
