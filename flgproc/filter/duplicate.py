@@ -1,3 +1,4 @@
+from enum import Enum
 from collections import deque
 
 from celery.utils.log import get_task_logger
@@ -12,19 +13,25 @@ logger = get_task_logger(__name__)
 LOCAL_FLAG_STORAGE = deque(maxlen=config.DUPFLAG_DEQUEU_MAXLEN)
 
 
+class DuplicationSource(Enum):
+    UNKNOWN = None,
+    LOCAL = 0,
+    ELASTIC = 1,
+
+
 @app.task()
 def duplicate_local(flag, add=True, **kwargs):
     logger.debug("checking flag '{0}' for local duplicates".format(flag))
     if flag in LOCAL_FLAG_STORAGE:
-        raise DuplicateFlagException(flag)
+        raise DuplicateFlagException(flag, DuplicationSource.LOCAL)
     if add:
         LOCAL_FLAG_STORAGE.append(flag)
     return flag
 
 
 @app.task()
-def duplicate_elasticsearch(flag, add=True, **kwargs):
+def duplicate_elasticsearch(flag, **kwargs):
     logger.debug("checking flag '{0}' for duplicates in elasticsearch".format(flag))
     if ELconn.event.get_events_count_ENTRY(flag) > 0:
-        raise DuplicateFlagException(flag)
+        raise DuplicateFlagException(flag, DuplicationSource.ELASTIC)
     return flag

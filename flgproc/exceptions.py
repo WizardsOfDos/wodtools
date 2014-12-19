@@ -15,6 +15,7 @@ class MalformedFlagException(FlagException):
 
 
 class DuplicateFlagException(FlagException):
-    def __init__(self, flag):
+    def __init__(self, flag, src):
         super(DuplicateFlagException, self).__init__(flag, "Duplicate flag: '{flag}'".format(flag=flag))
         self.reason = 'duplicateFlag'
+        self.source = src
