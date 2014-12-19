@@ -1,3 +1,4 @@
+import time
 import telnetlib
 import logging
 
@@ -6,6 +7,8 @@ TEXT_PREAMBLE_CLIENT = None
 TEXT_FLAG_MSG = "{flag}\n"
 
 ENCODING_SERVER = 'utf-8'
+
+MAX_RETRIES = 3
 
 
 class TelnetSubmitter:
@@ -40,14 +43,15 @@ class TelnetSubmitter:
         elif self._telnet_client.eof:
             self._init_client(True)
 
-    def send_flag(self, flag, retries=3):
+    def send_flag(self, flag, retries=MAX_RETRIES):
         try:
             self._ensure_initialized()
             self._telnet_client.read_eager()
-            self._send(TEXT_FLAG_MSG.format(flag=flag, **TEAM_INFO))
+            self._send(TEXT_FLAG_MSG.format(flag=flag, **self._team_context))
             return self._telnet_client.read_some().decode(ENCODING_SERVER)
-        except (OSError, EOFError) as er:
+        except (OSError, EOFError, ConnectionRefusedError) as er:
             if retries > 0:
+                time.sleep(max(0, MAX_RETRIES-retries))
                 self._init_client(True)
                 return self.send_flag(flag, retries-1)
             else:

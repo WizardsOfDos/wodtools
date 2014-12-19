@@ -4,6 +4,7 @@ from celery.utils.log import get_task_logger
 from ELconn import event
 
 from flgproc import app
+from flgproc import chains
 from flgproc.filter.matching import regex
 from flgproc.filter.duplicate import duplicate_local, duplicate_elasticsearch
 from flgproc.submitter.demo import printer
@@ -29,11 +30,6 @@ def inpython_collector(flag, **flagargs):
     regex(flag)
 
     """
-    Create the ENTRY event for this flag
-    """
-    event.add_event_ENTRY(flag, **flagargs)
-
-    """
     If the checks did not throw exceptions, put flag in remote processing.
     This is doing some other checks eg and then submitting the flag.
     But don't wait for result in the end!
@@ -42,4 +38,5 @@ def inpython_collector(flag, **flagargs):
     But we keep it as an example
     """
     #chain(duplicate_elasticsearch.s(flag) | printer.subtask( kwargs=flagargs, options={"ignore_result": True}))()
-    chain( printer.subtask( kwargs=flagargs, options={"ignore_result": True}))()
+    #chain( printer.subtask( kwargs=flagargs, options={"ignore_result": True}))()
+    chains.dupeCheck_logEvent_submit.apply_async(args=(flag,), kwargs=flagargs)

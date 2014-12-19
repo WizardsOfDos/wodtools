@@ -10,7 +10,7 @@ import ELconn.event
 
 logger = get_task_logger(__name__)
 
-LOCAL_FLAG_STORAGE = deque(maxlen=config.DUPFLAG_DEQUEU_MAXLEN)
+LOCAL_FLAG_STORAGE = deque(maxlen=config['DUPFLAG_DEQUE_MAXLEN'])
 
 
 @app.task()

@@ -12,7 +12,8 @@ CELERY_IMPORTS = ['flgproc.%s' % x for x in [
     'filter.matching',
 
     'collector.demo',
-    'submitter.demo',
+    'submitter',
+    'chains',
 ]]
 
 CELERY_ROUTES = {

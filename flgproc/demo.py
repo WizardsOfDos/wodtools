@@ -7,7 +7,7 @@ from flgproc.exceptions import DuplicateFlagException, MalformedFlagException
 flag_src = list("0123456789abcdef0123456789abcde")
 
 """ submitting some flags into the processing queue """
-for x in range(25):
+for x in range(50):
     random.shuffle(flag_src)
     flag = ''.join(flag_src) + '='
     print("submitting flag: {0}".format(flag))
