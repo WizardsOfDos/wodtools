@@ -1,3 +1,5 @@
+from enum import Enum
+
 class FlagException(Exception):
     def __init__(self, flag, text):
         super(FlagException, self).__init__(text)
@@ -15,6 +17,12 @@ class MalformedFlagException(FlagException):
 
 
 class DuplicateFlagException(FlagException):
+    class DuplicationSource(Enum):
+        UNKNOWN = None,
+        LOCAL = 0,
+        ELASTIC = 1,
+        GAMESERVER = 2,
+
     def __init__(self, flag, src):
         super(DuplicateFlagException, self).__init__(flag, "Duplicate flag: '{flag}'".format(flag=flag))
         self.reason = 'duplicateFlag'
