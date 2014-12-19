@@ -10,6 +10,6 @@ submitter = TelnetSubmitter('127.0.0.1', 5001)
 
 
 @app.task(ignore_result=True)
-def submit_flag(flag):
+def submit_flag(flag, **kwargs):
     result = submitter.send_flag(flag)
-    event.add_event_SUBMIT(flag, result)
+    event.add_event_SUBMIT(flag, result, **kwargs)
