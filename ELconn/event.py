@@ -14,6 +14,7 @@ class EventTypes(Enum):
     ENTRY = 0,
     DUPLICATE = -1,
     SUBMIT = 10,
+    ERROR = -100,
 
 
 def add_event(flag, event_type=EventTypes.UNKNOWN, **additional_data):
@@ -34,6 +35,9 @@ def add_event_SUBMIT(flag, result, **kwargs):
 
 def add_event_DUPLICATE(flag, result, **kwargs):
     return add_event(flag, event_type=EventTypes.DUPLICATE, result=result, **kwargs)
+
+def add_event_ERROR(flag, reason, **kwargs):
+    return add_event(flag, event_type=EventTypes.ERROR, result=reason, **kwargs)
 
 
 def get_events_count(flag, event_type, **kwargs):
