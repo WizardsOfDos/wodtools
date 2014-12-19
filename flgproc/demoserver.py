@@ -6,7 +6,7 @@ import re
 import time
 
 
-from flgproc import config_default as config
+import config_default as config
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
